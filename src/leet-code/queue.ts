@@ -24,4 +24,8 @@ export class Queue<T> {
   size(): number {
     return this.array.length;
   }
+
+  isEmpty(): boolean {
+    return this.size() === 0;
+  }
 }

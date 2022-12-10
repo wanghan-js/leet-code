@@ -1,6 +1,68 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
+import { onBeforeUnmount, onMounted, ref } from "vue";
+
+const targetTime = new Date("2022-11-25 23:44:00");
+const countdown = ref(formatTime(targetTime.valueOf() - Date.now()));
+const timer = 0;
+
+setInterval(() => {
+  const diff = targetTime.valueOf() - Date.now();
+  if (diff < 1000) {
+    clearInterval(timer);
+    countdown.value = "";
+    return;
+  }
+  countdown.value = formatTime(diff);
+}, 1000);
+
+onBeforeUnmount(() => {
+  clearInterval(timer);
+});
+
+function formatTime(time: number): string {
+  const hour = Math.floor(time / 1000 / 3600);
+  const minute = Math.floor((time - hour * 3600 * 1000) / 1000 / 60);
+  const second = Math.floor(
+    (time - hour * 3600 * 1000 - minute * 60 * 1000) / 1000
+  );
+  return padZero(hour) + ":" + padZero(minute) + ":" + padZero(second);
+}
+
+function padZero(num: number): string {
+  return num < 10 ? `0${num}` : String(num);
+}
+
+function formatDate(date: Date): string {
+  const year = date.getFullYear();
+  const month = padZero(date.getMonth() + 1);
+  const day = padZero(date.getDate());
+  const hour = padZero(date.getHours());
+  const minute = padZero(date.getMinutes());
+  const second = padZero(date.getSeconds());
+
+  return `${year}-${month}-${day} ${hour}:${minute}:${second}`;
+}
+
+let start = 0;
+function raf(timestamp: number) {
+  if (start === 0) {
+    start = timestamp;
+  }
+  const ellapse = timestamp - start;
+  const box = document.querySelector(".box") as HTMLDivElement;
+  box.style.width = parseFloat(getComputedStyle(box).width) + 1 + "px";
+  box.style.height = parseFloat(getComputedStyle(box).height) + 1 + "px";
+  console.log("timestamp", timestamp);
+  if (ellapse < 2000) {
+    requestAnimationFrame(raf);
+  }
+}
+
+onMounted(() => {
+  // requestAnimationFrame(raf);
+});
 </script>
 
 <template>
@@ -14,6 +76,13 @@ import HelloWorld from "./components/HelloWorld.vue";
     />
 
     <div class="wrapper">
+      <!--      <div class="countdown">-->
+      <!--        距离{{ formatDate(targetTime) }},-->
+      <!--        {{ countdown ? `还有${countdown}` : "时间到" }}-->
+      <!--      </div>-->
+
+      <div class="box"></div>
+
       <HelloWorld msg="You did it!" />
 
       <nav>
@@ -87,5 +156,10 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
+}
+.box {
+  width: 20px;
+  height: 20px;
+  background: cadetblue;
 }
 </style>

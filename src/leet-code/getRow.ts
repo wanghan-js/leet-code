@@ -48,3 +48,30 @@ function getRow(rowIndex: number): number[] {
 
   return row;
 }
+
+// xs: [5, 4, 3, 7, 8]
+function localMin(xs) {
+  let lo = 0;
+  let hi = xs.length - 1;
+  let mid = -1;
+  while (lo <= hi && mid !== lo && mid !== hi) {
+    if (xs[lo] < xs[lo + 1]) {
+      return lo;
+    } else if (xs[hi] < xs[hi - 1]) {
+      return hi;
+    } else {
+      mid = lo + ((hi - lo) >> 1);
+      const num = xs[mid];
+      const left = xs[mid - 1];
+      const right = xs[mid + 1];
+      if (num < left && num < right) {
+        return mid;
+      } else if (num >= left) {
+        hi = mid;
+      } else {
+        lo = mid;
+      }
+    }
+  }
+  return -1;
+}

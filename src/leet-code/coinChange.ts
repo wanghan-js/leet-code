@@ -33,8 +33,32 @@
  * 0 <= amount <= 104
  */
 export function coinChange(coins: number[], amount: number): number {
-  // f(n) = 1 + Min(f(n-x1), f(n-x2)...f(n-xi)...f(n-xn))
-  if (amount === 0) {
-    return 0;
+  // 加备忘录, 避免重复计算
+  const memo: Map<number, number> = new Map();
+
+  function dp(coins: number[], amount: number): number {
+    if (amount === 0) {
+      return 0;
+    }
+    if (amount < 0) {
+      return -1;
+    }
+    if (memo.get(amount)) {
+      return memo.get(amount) as number;
+    }
+
+    let res = Number.MAX_SAFE_INTEGER;
+    for (const coin of coins) {
+      const count = dp(coins, amount - coin);
+      if (count === -1) {
+        continue;
+      }
+      res = Math.min(res, count + 1);
+    }
+    res = res === Number.MAX_SAFE_INTEGER ? -1 : res;
+    memo.set(amount, res);
+    return res;
   }
+
+  return dp(coins, amount);
 }

@@ -60,3 +60,10 @@ export function addStrings(num1: string, num2: string): string {
 
   return result;
 }
+
+const a = await new Promise((resolve, reject) => {
+  setTimeout(() => {
+    resolve(2);
+  }, 2000);
+});
+console.log(a);

@@ -16,21 +16,25 @@ import {
 } from "@/leet-code/sort";
 import { Stack2queue } from "@/leet-code/stack2queue";
 import { Queue2stack } from "@/leet-code/queue2stack";
+import { arrayLittleSum } from "@/leet-code/arrayLittleSum";
 
 export function __main__() {
-  const stack = new Queue2stack<number>();
-  stack.push(1);
-  stack.push(2);
-  stack.push(3);
-  stack.push(4);
-  stack.push(5);
+  const arr = [1, 3, 4, 2, 5]
+  const sum = arrayLittleSum(arr)
+  console.log(sum, arr)
+  // const stack = new Queue2stack<number>();
+  // stack.push(1);
+  // stack.push(2);
+  // stack.push(3);
+  // stack.push(4);
+  // stack.push(5);
 
-  console.log(stack);
-  console.log(stack.size());
-  console.log(stack.peek());
-  stack.push(6);
-  console.log(stack.pop());
-  console.log(stack.pop());
+  // console.log(stack);
+  // console.log(stack.size());
+  // console.log(stack.peek());
+  // stack.push(6);
+  // console.log(stack.pop());
+  // console.log(stack.pop());
   // const arr = new MyArray<string>(5);
   // arr.push("a");
   // console.log(arr);

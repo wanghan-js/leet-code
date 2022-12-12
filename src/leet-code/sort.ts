@@ -65,6 +65,45 @@ export function quickSort(xs: number[]): number[] {
   return [...quickSort(left), pivot, ...quickSort(right)];
 }
 
+// 归并排序: 分治: O(N*logN)
+// 这种类型的递归算法的时间复杂度计算公式: T(N) = a * T(N/b) + O(N^d)
+// 其中 a, b, d 都为常数
+// a: 递归的子问题的个数; b: 每个子问题占据整个问题规模 N 的倒数; d: 处理子问题外, 其他算法步骤的时间复杂度
+// if logba > d, T(N) = O(N^logba); if logba < d, T(N) = O(N^d); if logba == d, T(N) = O(N^d * logN)
+export function mergeSort(xs: number[]): number[] {
+  if (xs.length < 2) {
+    return xs;
+  }
+  const mid = xs.length >> 1;
+  // 先把两部分排好序, 最后把他们合并起来
+  const part1 = mergeSort(xs.slice(0, mid));
+  const part2 = mergeSort(xs.slice(mid));
+
+  let i = 0;
+  let j = 0;
+  const arr: number[] = [];
+  while (i < part1.length || j < part2.length) {
+    const a = part1[i];
+    const b = part2[j];
+    if (a === undefined) {
+      arr.push(...part2.slice(j));
+      break;
+    }
+    if (b === undefined) {
+      arr.push(...part1.slice(i));
+      break;
+    }
+    if (a > b) {
+      arr.push(b);
+      j++;
+    } else {
+      arr.push(a);
+      i++;
+    }
+  }
+  return arr;
+}
+
 // 交换数组中元素的位置
 function swap(xs: number[], i: number, j: number) {
   [xs[i], xs[j]] = [xs[j], xs[i]];

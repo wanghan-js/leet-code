@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from "vue-router";
 import HelloWorld from "./components/HelloWorld.vue";
-import { onBeforeUnmount, onMounted, ref } from "vue";
+import { onBeforeUnmount, onMounted, provide, ref } from "vue";
 
 const targetTime = new Date("2022-11-25 23:44:00");
 const countdown = ref(formatTime(targetTime.valueOf() - Date.now()));
@@ -20,6 +20,14 @@ setInterval(() => {
 onBeforeUnmount(() => {
   clearInterval(timer);
 });
+
+const message = ref("hello");
+
+provide("message", message);
+
+setTimeout(() => {
+  message.value = "world";
+}, 2000);
 
 function formatTime(time: number): string {
   const hour = Math.floor(time / 1000 / 3600);

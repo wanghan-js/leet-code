@@ -11,6 +11,7 @@ import { MyArray } from "@/leet-code/myArray";
 import {
   bubbleSort,
   insertionSort,
+  mergeSort,
   quickSort,
   selectionSort,
 } from "@/leet-code/sort";
@@ -18,19 +19,19 @@ import { Stack2queue } from "@/leet-code/stack2queue";
 import { Queue2stack } from "@/leet-code/queue2stack";
 
 export function __main__() {
-  const stack = new Queue2stack<number>();
-  stack.push(1);
-  stack.push(2);
-  stack.push(3);
-  stack.push(4);
-  stack.push(5);
-
-  console.log(stack);
-  console.log(stack.size());
-  console.log(stack.peek());
-  stack.push(6);
-  console.log(stack.pop());
-  console.log(stack.pop());
+  // const stack = new Queue2stack<number>();
+  // stack.push(1);
+  // stack.push(2);
+  // stack.push(3);
+  // stack.push(4);
+  // stack.push(5);
+  //
+  // console.log(stack);
+  // console.log(stack.size());
+  // console.log(stack.peek());
+  // stack.push(6);
+  // console.log(stack.pop());
+  // console.log(stack.pop());
   // const arr = new MyArray<string>(5);
   // arr.push("a");
   // console.log(arr);
@@ -46,10 +47,8 @@ export function __main__() {
   // arr.pop();
   // arr.get(0);
 
-  // const arr = [4, 3, 6, 1, 2, 5];
-  // quickSort(arr);
-  // console.log(arr);
-  // console.log(quickSort(arr));
+  const arr = [4, 3, 6, 1, 2, 5];
+  console.log(mergeSort(arr));
 
   // 用户输入的代码
   // const code = `

@@ -2,7 +2,7 @@
 
 // 选择排序: 一直找最小的数
 
-export function selectionSort(xs: number[]) {
+export function selectionSort(xs: number[]): void {
   const len = xs.length;
   for (let i = 0; i < len; i++) {
     // 从头到尾遍历每一个元素
@@ -20,7 +20,7 @@ export function selectionSort(xs: number[]) {
 }
 
 // 冒泡排序: 一直找最大的数
-export function bubbleSort(xs: number[]) {
+export function bubbleSort(xs: number[]): void {
   const len = xs.length;
   // 每遍历一次, 最大下标就少 1 (因为最大值已经确定了)
   for (let i = len - 1; i > 0; i--) {
@@ -34,7 +34,7 @@ export function bubbleSort(xs: number[]) {
 }
 
 // 插入排序: 确保前面的部分有序
-export function insertionSort(xs: number[]) {
+export function insertionSort(xs: number[]): void {
   const len = xs.length;
   for (let i = 1; i < len; i++) {
     for (let j = i - 1; j >= 0 && xs[j] > xs[j + 1]; j--) {
@@ -44,25 +44,39 @@ export function insertionSort(xs: number[]) {
   }
 }
 
-// 快速排序: 分治思想
-export function quickSort(xs: number[]): number[] {
-  // 先随便找个数, 把比它大的放左边子数组, 比它小的放右边子数组, 递归排序
-  if (xs.length < 2) {
-    return xs;
-  }
-  const pivot = xs[0];
-  const left: number[] = [];
-  const right: number[] = [];
-  // 注意这里 i 的下标一定要从 1 开始, 因为 0 已经被选做 pivot 了
-  for (let i = 1; i < xs.length; i++) {
-    const n = xs[i];
-    if (n >= pivot) {
-      right.push(n);
-    } else {
-      left.push(n);
+// 快速排序: 分治思想, 把数组分为 3 块: 小于区, 等于区, 大于区
+export function quickSort(xs: number[]): void {
+  function process(xs: number[], left: number, right: number): void {
+    if (right <= left) {
+      return;
     }
+    // 这里 pivot 需要随机选择, 以避免当数组本身有序时 O(N^2) 的复杂度
+    const pivot = getRandomInt(left, right + 1);
+    const value = xs[pivot];
+    // 把 pivot 的元素放在第一个
+    swap(xs, left, pivot);
+    // 小于区指针
+    let little = left - 1;
+    // 大于区指针
+    let big = right + 1;
+    for (let i = left + 1; i < big; i++) {
+      if (xs[i] < value) {
+        // 小于区扩大边界
+        little++;
+        swap(xs, little, i);
+      } else if (xs[i] > value) {
+        // 大于区扩大边界
+        big--;
+        swap(xs, big, i);
+        // 这里 i-- 的原因是, 从大于区换过来的数还没有比对过, 所以 i 不能自增, 需要停在原地
+        i--;
+      }
+    }
+    process(xs, left, little);
+    process(xs, big, right);
   }
-  return [...quickSort(left), pivot, ...quickSort(right)];
+
+  process(xs, 0, xs.length - 1);
 }
 
 // 归并排序: 分治: O(N*logN)
@@ -70,41 +84,61 @@ export function quickSort(xs: number[]): number[] {
 // 其中 a, b, d 都为常数
 // a: 递归的子问题的个数; b: 每个子问题占据整个问题规模 N 的倒数; d: 处理子问题外, 其他算法步骤的时间复杂度
 // if logba > d, T(N) = O(N^logba); if logba < d, T(N) = O(N^d); if logba == d, T(N) = O(N^d * logN)
-export function mergeSort(xs: number[]): number[] {
-  if (xs.length < 2) {
-    return xs;
-  }
-  const mid = xs.length >> 1;
-  // 先把两部分排好序, 最后把他们合并起来
-  const part1 = mergeSort(xs.slice(0, mid));
-  const part2 = mergeSort(xs.slice(mid));
+export function mergeSort(xs: number[]): void {
+  function process(xs: number[], left: number, right: number): void {
+    if (right <= left) {
+      return;
+    }
+    const mid = left + ((right - left) >> 1);
+    // 先把两部分排好序, 最后把他们合并起来
+    process(xs, left, mid);
+    process(xs, mid + 1, right);
 
-  let i = 0;
-  let j = 0;
-  const arr: number[] = [];
-  while (i < part1.length || j < part2.length) {
-    const a = part1[i];
-    const b = part2[j];
-    if (a === undefined) {
-      arr.push(...part2.slice(j));
-      break;
+    let i = left;
+    let j = mid + 1;
+    const helper: number[] = [];
+    while (i <= mid || j <= right) {
+      if (i > mid) {
+        // 左组越界, 把剩余右组的元素 push 进去
+        for (let k = j; k <= right; k++) {
+          helper.push(xs[k]);
+        }
+        break;
+      }
+      if (j > right) {
+        // 右组越界, 把剩余左组的元素 push 进去
+        for (let k = i; k <= mid; k++) {
+          helper.push(xs[k]);
+        }
+        break;
+      }
+
+      const a = xs[i];
+      const b = xs[j];
+
+      if (a > b) {
+        helper.push(b);
+        j++;
+      } else {
+        helper.push(a);
+        i++;
+      }
     }
-    if (b === undefined) {
-      arr.push(...part1.slice(i));
-      break;
-    }
-    if (a > b) {
-      arr.push(b);
-      j++;
-    } else {
-      arr.push(a);
-      i++;
+
+    for (let k = 0; k < helper.length; k++) {
+      xs[left + k] = helper[k];
     }
   }
-  return arr;
+
+  process(xs, 0, xs.length - 1);
 }
 
 // 交换数组中元素的位置
-function swap(xs: number[], i: number, j: number) {
+function swap(xs: number[], i: number, j: number): void {
   [xs[i], xs[j]] = [xs[j], xs[i]];
+}
+
+// 获取一个随机数: [min, max)
+export function getRandomInt(min: number, max: number): number {
+  return Math.floor(Math.random() * (max - min) + min);
 }

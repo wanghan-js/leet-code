@@ -3,13 +3,13 @@ import { threeSum } from "@/leet-code/threeSum";
 import { maxAreaOfIsland } from "@/leet-code/maxAreaOfIsland";
 import { hasPathSum } from "@/leet-code/hasPathSum";
 import { TreeNode } from "@/leet-code/treeNode";
-import { hasSequence, 回形数组 } from "@/leet-code/回形二维数组展开";
 import { arrToTree, drink } from "@/leet-code/drink";
 import { sandbox } from "@/leet-code/js_proxy";
 import { shuffle } from "@/leet-code/shuffle";
 import { MyArray } from "@/leet-code/myArray";
 import {
   bubbleSort,
+  getRandomInt,
   insertionSort,
   mergeSort,
   quickSort,
@@ -20,52 +20,9 @@ import { Queue2stack } from "@/leet-code/queue2stack";
 import { arrayLittleSum } from "@/leet-code/arrayLittleSum";
 
 export function __main__() {
-  // const stack = new Queue2stack<number>();
-  // stack.push(1);
-  // stack.push(2);
-  // stack.push(3);
-  // stack.push(4);
-  // stack.push(5);
-  //
-  // console.log(stack);
-  // console.log(stack.size());
-  // console.log(stack.peek());
-  // stack.push(6);
-  // console.log(stack.pop());
-  // console.log(stack.pop());
-  const arr = [1, 3, 4, 2, 5]
-  const sum = arrayLittleSum(arr)
-  console.log(sum, arr)
-  // const stack = new Queue2stack<number>();
-  // stack.push(1);
-  // stack.push(2);
-  // stack.push(3);
-  // stack.push(4);
-  // stack.push(5);
-
-  // console.log(stack);
-  // console.log(stack.size());
-  // console.log(stack.peek());
-  // stack.push(6);
-  // console.log(stack.pop());
-  // console.log(stack.pop());
-  // const arr = new MyArray<string>(5);
-  // arr.push("a");
-  // console.log(arr);
-  // console.log(arr.get(0));
-  // arr.set(1, "c");
-  // arr.set(2, "cf");
-  // arr.set(3, "ca");
-  // arr.set(4, "cga");
-  // arr.pop();
-  // arr.pop();
-  // arr.pop();
-  // arr.pop();
-  // arr.pop();
-  // arr.get(0);
-
-  const arr = [4, 3, 6, 1, 2, 5];
-  console.log(mergeSort(arr));
+  const arr: number[] = [4, 3, 6, 1, 4, 3, 7, 1, 2, 2, 5];
+  quickSort(arr);
+  console.log(arr);
 
   // 用户输入的代码
   // const code = `

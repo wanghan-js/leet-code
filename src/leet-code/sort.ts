@@ -137,8 +137,29 @@ export function mergeSort(xs: number[]): void {
 export function heapSort(xs: number[]): void {
   // 先把数组变成大顶堆
   const len = xs.length;
-  for (let i = 0; i < len; i++) {
-    let j = i;
+  // 从后往前遍历, 对每个数执行 heapify, 可以把数组变成大顶堆的时间复杂度降低为 O(N)
+  for (let i = len - 1; i >= 0; i--) {
+    heapify(xs, i, len);
+  }
+
+  // 如果题目要求是逐个的提供数字, 然后变成大顶堆, 则只能对每个数字逐个调用 heapInsert 方法
+  // 这样的时间复杂度是 O(N*logN)
+  // for (let i = 0; i < len; i++) {
+  //   heapInsert(xs, i);
+  // }
+
+  let heapSize = len;
+  while (heapSize > 1) {
+    // 再逐个交换最大值和数组末尾值
+    swap(xs, 0, heapSize - 1);
+    // 交换之后, 当前最大值就在数组末尾了, 接着将堆容量减 1, 不再关注最后的最大数
+    heapSize--;
+    // 然后需要把交换后的子数组 (heapSize - 1) 再变为大顶堆
+    heapify(xs, 0, heapSize);
+  }
+
+  function heapInsert(xs: number[], index: number): void {
+    let j = index;
     while (j) {
       // 父节点的下标
       const k = Math.floor((j - 1) / 2);
@@ -152,14 +173,8 @@ export function heapSort(xs: number[]): void {
     }
   }
 
-  let heapSize = len;
-  while (heapSize > 1) {
-    // 再逐个交换最大值和数组末尾值
-    swap(xs, 0, heapSize - 1);
-    // 交换之后, 当前最大值就在数组末尾了, 接着将堆容量减 1, 不再关注最后的最大数
-    heapSize--;
-    // 然后需要把交换后的子数组 (heapSize - 1) 再变为大顶堆
-    let i = 0;
+  function heapify(xs: number[], index: number, heapSize: number): void {
+    let i = index;
     // 如果 i 处有孩子, 并且它比其中一个孩子小, 则下沉
     let leftIndex = i * 2 + 1;
     while (leftIndex < heapSize) {
@@ -168,6 +183,7 @@ export function heapSort(xs: number[]): void {
         rightIndex < heapSize && xs[rightIndex] > xs[leftIndex]
           ? rightIndex
           : leftIndex;
+      // 如果 i 处有孩子, 并且它比其中一个孩子小, 则下沉
       if (xs[i] < xs[maxIndex]) {
         swap(xs, i, maxIndex);
         i = maxIndex;

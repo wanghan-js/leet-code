@@ -21,7 +21,7 @@ import { Queue2stack } from "@/leet-code/queue2stack";
 import { arrayLittleSum } from "@/leet-code/arrayLittleSum";
 
 export function __main__() {
-  const arr: number[] = [2, 1, 3, 0];
+  const arr: number[] = [2, 1, 3, 0, 7, 9, 5, 4, 6, 8];
   heapSort(arr);
   console.log(arr);
 

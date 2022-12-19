@@ -133,6 +133,52 @@ export function mergeSort(xs: number[]): void {
   process(xs, 0, xs.length - 1);
 }
 
+// 堆排序 O(N*logN)
+export function heapSort(xs: number[]): void {
+  // 先把数组变成大顶堆
+  const len = xs.length;
+  for (let i = 0; i < len; i++) {
+    let j = i;
+    while (j) {
+      // 父节点的下标
+      const k = Math.floor((j - 1) / 2);
+      if (xs[j] > xs[k]) {
+        // 比父大就交换位置
+        swap(xs, j, k);
+        j = k;
+      } else {
+        break;
+      }
+    }
+  }
+
+  let heapSize = len;
+  while (heapSize > 1) {
+    // 再逐个交换最大值和数组末尾值
+    swap(xs, 0, heapSize - 1);
+    // 交换之后, 当前最大值就在数组末尾了, 接着将堆容量减 1, 不再关注最后的最大数
+    heapSize--;
+    // 然后需要把交换后的子数组 (heapSize - 1) 再变为大顶堆
+    let i = 0;
+    // 如果 i 处有孩子, 并且它比其中一个孩子小, 则下沉
+    let leftIndex = i * 2 + 1;
+    while (leftIndex < heapSize) {
+      const rightIndex = leftIndex + 1;
+      const maxIndex =
+        rightIndex < heapSize && xs[rightIndex] > xs[leftIndex]
+          ? rightIndex
+          : leftIndex;
+      if (xs[i] < xs[maxIndex]) {
+        swap(xs, i, maxIndex);
+        i = maxIndex;
+        leftIndex = i * 2 + 1;
+      } else {
+        break;
+      }
+    }
+  }
+}
+
 // 交换数组中元素的位置
 function swap(xs: number[], i: number, j: number): void {
   [xs[i], xs[j]] = [xs[j], xs[i]];

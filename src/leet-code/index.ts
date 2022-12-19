@@ -10,6 +10,7 @@ import { MyArray } from "@/leet-code/myArray";
 import {
   bubbleSort,
   getRandomInt,
+  heapSort,
   insertionSort,
   mergeSort,
   quickSort,
@@ -20,8 +21,8 @@ import { Queue2stack } from "@/leet-code/queue2stack";
 import { arrayLittleSum } from "@/leet-code/arrayLittleSum";
 
 export function __main__() {
-  const arr: number[] = [4, 3, 6, 1, 4, 3, 7, 1, 2, 2, 5];
-  quickSort(arr);
+  const arr: number[] = [2, 1, 3, 0];
+  heapSort(arr);
   console.log(arr);
 
   // 用户输入的代码
